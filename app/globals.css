@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --background: 223 23% 98%; /* #f6f7fb-ish */
+  --foreground: 221 39% 9%; /* #15161e */
+  --card: 0 0% 100%;
+  --card-foreground: 221 39% 9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 221 39% 9%;
+  --primary: 232 14% 10%; /* dark neutral */
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 14% 96%;
+  --secondary-foreground: 221 39% 9%;
+  --muted: 220 14% 96%;
+  --muted-foreground: 220 10% 50%;
+  --accent: 220 14% 96%;
+  --accent-foreground: 221 39% 9%;
+  --destructive: 0 58% 58%; /* ~#cc4f4f */
+  --destructive-foreground: 0 0% 98%;
+  --border: 220 10% 92%; /* #EEEFF2-ish */
+  --input: 220 10% 92%;
+  --ring: 220 10% 75%;
+  --success: 125 58% 42%; /* #30AF32 */
+  --success-bg: 127 53% 93%; /* #EAF7EA */
+  --success-border: 123 46% 74%; /* #ACDFAD */
+  --error: 0 53% 55%; /* #CC4F4F */
+  --error-bg: 0 63% 96%; /* #FAEDED */
+  --error-border: 0 58% 83%; /* #EBB8B8 */
+  --yellow: 48 100% 66%; /* #FFD85F */
+  --radius: 10px;
+  --shadow-xs: 0px 1px 2px rgba(28, 32, 43, 0.06);
+  --shadow-card: 0px 1px 9px rgba(0, 0, 0, 0.04);
+}
+
+.dark {
+  --background: 221 39% 9%;
+  --foreground: 0 0% 98%;
+  --card: 221 39% 9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 221 39% 9%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 0 0% 98%;
+  --primary-foreground: 221 39% 9%;
+  --secondary: 221 39% 12%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 221 39% 12%;
+  --muted-foreground: 221 10% 70%;
+  --accent: 221 39% 12%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 50.6%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 221 39% 16%;
+  --input: 221 39% 16%;
+  --ring: 221 39% 60%;
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
