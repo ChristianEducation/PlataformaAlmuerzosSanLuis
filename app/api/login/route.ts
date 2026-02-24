@@ -41,6 +41,14 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Usuario o contraseña inválidos." }, { status: 401 });
     }
 
+    const { error: lastLoginError } = await supabase
+      .from("usuarios")
+      .update({ last_login_at: new Date().toISOString() })
+      .eq("id", user.id);
+    if (lastLoginError) {
+      console.error("Error updating last_login_at:", lastLoginError);
+    }
+
     const cookiePayload = createSessionCookie({
       userId: user.id,
       username: user.username,
