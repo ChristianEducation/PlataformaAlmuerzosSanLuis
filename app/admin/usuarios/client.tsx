@@ -51,7 +51,7 @@ export function UsuariosClient({ usuarios }: Props) {
   const [rolFilter, setRolFilter] = useState<"all" | "casino" | "admin" | "superadmin">(
     "all",
   );
-  const [estadoFilter, setEstadoFilter] = useState<"all" | "activo" | "inactivo">("all");
+  const [estadoFilter, setEstadoFilter] = useState<"all" | "activo" | "inactivo">("activo");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -199,13 +199,13 @@ export function UsuariosClient({ usuarios }: Props) {
         </p>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-slate-900">Gestión de usuarios</h1>
+            <h1 className="text-2xl font-semibold text-slate-900">Gestión de Usuarios</h1>
             <p className="text-sm text-slate-600">Crea, edita, activa o resetea contraseñas.</p>
           </div>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <Button
               onClick={openCreate}
-              className="h-10 w-full rounded-lg bg-[#ffe3a3] text-slate-900 shadow-[var(--shadow-xs)] hover:bg-[#f6d48c] sm:w-auto"
+              className="h-10 w-full rounded-lg btn-accent sm:w-auto"
             >
               Nuevo usuario
             </Button>
@@ -222,7 +222,7 @@ export function UsuariosClient({ usuarios }: Props) {
         </div>
       ) : null}
 
-      <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
+      <Card className="cs-card">
         <CardHeader className="space-y-4">
           <CardTitle className="text-base font-semibold text-slate-900">
             Filtros

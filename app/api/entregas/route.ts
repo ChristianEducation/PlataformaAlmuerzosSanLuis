@@ -203,21 +203,22 @@ Contacto: Cristian Ly (Administrador)`;
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body { margin:0; padding:0; background:#f6f7fb; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color:#0f172a; }
-    .container { max-width:600px; margin:24px auto; padding:0 16px; }
-    .card { background:#ffffff; border:1px solid #e2e8f0; border-radius:14px; overflow:hidden; box-shadow:0 12px 30px rgba(15,23,42,0.08); }
-    .logo { width:64px; height:64px; object-fit:contain; }
-    .topbar { background:#ffd85f; padding:10px 20px; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#111827; }
+    .container { max-width:620px; margin:24px 0; padding:0 16px; }
+    .card { background:#ffffff; border:1px solid #e5e7eb; border-radius:16px; overflow:hidden; box-shadow:0 18px 40px rgba(15,23,42,0.08); }
+    .topbar { background:#f6d48c; padding:12px 20px; font-size:12px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#111827; }
     .content { padding:24px; }
-    .title { font-size:20px; font-weight:700; margin:0 0 6px; }
-    .subtitle { font-size:14px; color:#475569; margin:0 0 16px; }
-    .badge { display:inline-block; padding:6px 12px; border-radius:999px; background:#0f172a; color:#fff; font-size:12px; font-weight:600; letter-spacing:0.01em; white-space:nowrap; }
-    .section { margin-top:16px; border:1px solid #e2e8f0; border-radius:12px; padding:14px 16px; background:#f8fafc; }
+    .header { display:block; }
+    .title { font-size:22px; font-weight:700; margin:0 0 6px; }
+    .subtitle { font-size:15px; color:#475569; margin:0; }
+    .meta { margin-top:8px; font-size:12px; color:#64748b; }
+    .section { margin-top:18px; border:1px solid #e5e7eb; border-radius:12px; padding:16px 18px; background:#f8fafc; }
     .row { margin:10px 0; }
     .label { font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:#64748b; margin-bottom:4px; }
     .value { font-size:15px; font-weight:600; color:#0f172a; }
-    .divider { height:1px; background:#e2e8f0; margin:18px 0; }
-    .footer { font-size:12px; color:#64748b; text-align:center; padding:18px 16px; background:#f1f5f9; }
+    .divider { height:1px; background:#e5e7eb; margin:18px 0; }
+    .note { font-size:13px; color:#475569; margin:0; }
     .highlight { color:#0f172a; font-weight:700; }
+    .footer { font-size:12px; color:#64748b; text-align:center; padding:18px 16px; background:#f1f5f9; }
   </style>
 </head>
 <body>
@@ -225,21 +226,10 @@ Contacto: Cristian Ly (Administrador)`;
     <div class="card">
       <div class="topbar">Colegio San Luis · Plataforma de almuerzos</div>
       <div class="content">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
-          <div style="display:flex; align-items:center; gap:12px;">
-            <img
-              src="https://lh3.googleusercontent.com/d/16iSnOtIJi9mFv55l0bjWYkNAAYCbJS9p"
-              alt="Colegio San Luis"
-              width="64"
-              height="64"
-              style="display:block; width:64px; height:64px; object-fit:contain;"
-            />
-            <div>
-            <div class="title">Confirmación de entrega</div>
-            <div class="subtitle">Registro oficial de entrega de almuerzo</div>
-            </div>
-          </div>
-          <span class="badge">Entregado</span>
+        <div class="header">
+          <div class="title">Confirmación de entrega</div>
+          <div class="subtitle">Registro oficial de entrega de almuerzo</div>
+          <div class="meta">Estado: Entregado</div>
         </div>
 
         <div class="section">
@@ -263,7 +253,7 @@ Contacto: Cristian Ly (Administrador)`;
 
         <div class="divider"></div>
 
-        <p class="subtitle">
+        <p class="note">
           Si no fuiste tú, contacta a administración.
           <span class="highlight">Contacto: Cristian Ly (Administrador)</span>
         </p>

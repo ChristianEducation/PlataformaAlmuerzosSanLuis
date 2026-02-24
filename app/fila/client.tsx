@@ -207,7 +207,7 @@ export function FilaClient({ dateLabel, usuario, rol, initialPersonas, horarioCo
       </header>
 
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-4 px-4 py-5 sm:px-6 lg:px-8">
-        <div className="rounded-2xl border border-[#f1f2f5] bg-white/90 p-4 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)] sm:p-5">
+        <div className="rounded-2xl cs-card p-4 sm:p-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
               <h2 className="flex items-center gap-2 text-lg font-semibold text-slate-900 sm:text-xl">
@@ -232,7 +232,7 @@ export function FilaClient({ dateLabel, usuario, rol, initialPersonas, horarioCo
                 placeholder="Buscar por nombre o correo…"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="h-10 rounded-lg border-[#eeeff2] bg-white pl-10 text-slate-900 placeholder:text-[#a4abb8] shadow-[var(--shadow-xs)] transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-[#ffd85f]/40 sm:h-11"
+                className="h-10 rounded-lg border-[#eeeff2] bg-white pl-10 text-slate-900 placeholder:text-[#a4abb8] shadow-[var(--shadow-xs)] transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-[var(--accent-soft-hover)] focus-visible:ring-opacity-40 sm:h-11"
               />
             </div>
           </div>
@@ -282,7 +282,7 @@ export function FilaClient({ dateLabel, usuario, rol, initialPersonas, horarioCo
                         <Button
                           onClick={() => setSelected(persona)}
                           disabled={isPending || fueraHorario}
-                          className="w-full rounded-lg bg-[#ffe3a3] text-slate-900 shadow-[var(--shadow-xs)] transition-transform duration-150 hover:-translate-y-0.5 hover:bg-[#f6d48c] sm:w-auto"
+                          className="w-full rounded-lg btn-accent transition-transform duration-150 hover:-translate-y-0.5 sm:w-auto"
                         >
                           Entregar
                         </Button>
@@ -319,7 +319,7 @@ export function FilaClient({ dateLabel, usuario, rol, initialPersonas, horarioCo
             <Button
               onClick={() => selected && entregar(selected)}
               disabled={isPending || fueraHorario}
-              className="bg-[#ffe3a3] text-slate-900 shadow-[var(--shadow-xs)] hover:bg-[#f6d48c]"
+              className="btn-accent"
             >
               {isPending ? (
                 <span className="flex items-center gap-2">

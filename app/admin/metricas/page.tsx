@@ -215,7 +215,7 @@ export default async function AdminMetricasPage({ searchParams }: SearchProps) {
         </p>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-2xl font-semibold text-slate-900">Análisis mensual</h1>
+            <h1 className="text-2xl font-semibold text-slate-900">Análisis Mensual</h1>
             <p className="text-sm text-slate-600">
               Comportamiento mensual y proyección del mes en curso.
             </p>
@@ -223,7 +223,7 @@ export default async function AdminMetricasPage({ searchParams }: SearchProps) {
         </div>
       </div>
 
-      <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
+      <Card className="cs-card">
         <CardHeader className="space-y-2">
           <MetricasFilterBar
             monthParam={monthParam}
@@ -235,7 +235,7 @@ export default async function AdminMetricasPage({ searchParams }: SearchProps) {
       </Card>
 
       <div className="grid gap-2 lg:grid-cols-3">
-        <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
+        <Card className="cs-card">
           <CardHeader className="flex flex-row items-center gap-3 py-4">
             <div className="rounded-xl bg-amber-50 p-2 text-amber-600">
               <BarChart3 className="h-4 w-4" />
@@ -253,7 +253,7 @@ export default async function AdminMetricasPage({ searchParams }: SearchProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
+        <Card className="cs-card">
           <CardHeader className="flex flex-row items-center gap-3 py-4">
             <div className="rounded-xl bg-amber-50 p-2 text-amber-600">
               <TrendingUp className="h-4 w-4" />
@@ -273,7 +273,7 @@ export default async function AdminMetricasPage({ searchParams }: SearchProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
+        <Card className="cs-card">
           <CardHeader className="flex flex-row items-center gap-3 py-4">
             <div className="rounded-xl bg-amber-50 p-2 text-amber-600">
               <CalendarClock className="h-4 w-4" />
@@ -295,7 +295,7 @@ export default async function AdminMetricasPage({ searchParams }: SearchProps) {
       </div>
 
       <div className="grid gap-2 lg:grid-cols-[1.2fr_0.8fr]">
-        <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
+        <Card className="cs-card">
           <CardHeader>
             <CardTitle className="text-base font-semibold text-slate-900">
               Comparativo últimos meses
@@ -307,7 +307,7 @@ export default async function AdminMetricasPage({ searchParams }: SearchProps) {
                 <div key={item.month} className="space-y-2 text-center">
                   <div className="flex h-28 items-end justify-center">
                     <div
-                      className="w-full rounded-md bg-gradient-to-t from-[#f6d48c] to-[#ffe3a3] transition-all"
+                      className="w-full rounded-md bg-gradient-to-t from-[var(--accent-soft-hover)] to-[var(--accent-soft)] transition-all"
                       style={{ height: `${(item.entregas / maxMonth) * 100}%` }}
                       title={`${item.entregas} entregas`}
                     />
@@ -343,7 +343,7 @@ export default async function AdminMetricasPage({ searchParams }: SearchProps) {
           </CardContent>
         </Card>
 
-        <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
+        <Card className="cs-card">
           <CardHeader>
             <CardTitle className="text-base font-semibold text-slate-900">
               Entregas por día ({formatMonthLabel(monthParam)})
@@ -380,7 +380,7 @@ export default async function AdminMetricasPage({ searchParams }: SearchProps) {
                             inMonth
                               ? "border-[#eeeff2] bg-white"
                               : "border-transparent bg-slate-100/60 text-slate-400"
-                          } ${isToday ? "ring-2 ring-[#f6d48c]" : ""}`}
+                          } ${isToday ? "ring-2 ring-[var(--accent-soft-hover)]" : ""}`}
                         >
                           <p className="text-[10px] font-semibold text-slate-400">
                             {inMonth ? day.slice(8, 10) : ""}

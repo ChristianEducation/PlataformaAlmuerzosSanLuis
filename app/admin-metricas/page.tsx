@@ -163,7 +163,7 @@ export default async function AdminMetricasLitePage({ searchParams }: SearchProp
 
   return (
     <div className="space-y-3 sm:space-y-4">
-      <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
+      <Card className="cs-card">
         <CardHeader className="pb-2 pt-4 sm:pt-5">
           <AdminMetricasFilterBar
             monthParam={monthParam}
@@ -174,7 +174,7 @@ export default async function AdminMetricasLitePage({ searchParams }: SearchProp
         </CardHeader>
       </Card>
 
-      <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
+      <Card className="cs-card">
         <CardHeader className="pb-2 pt-4 sm:pt-5">
           <CardTitle className="text-base font-semibold text-slate-900">
             Calendario mensual ({formatMonthLabel(monthParam)})
@@ -210,7 +210,7 @@ export default async function AdminMetricasLitePage({ searchParams }: SearchProp
                           inMonth
                             ? "border-[#eeeff2] bg-white"
                             : "border-transparent bg-slate-100/60 text-slate-400"
-                        } ${isToday ? "ring-2 ring-[#ffd85f]" : ""}`}
+                          } ${isToday ? "ring-2 ring-[var(--accent-soft-hover)]" : ""}`}
                       >
                         <p className="text-[10px] font-semibold text-slate-500 sm:text-[11px]">
                           {inMonth ? Number(day.slice(8, 10)) : ""}

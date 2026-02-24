@@ -112,7 +112,7 @@ export function AdminMetricasExportButton({
   return (
     <Button
       onClick={handleExport}
-      className="h-9 min-w-[150px] rounded-lg bg-[#ffe3a3] px-4 text-slate-900 shadow-[var(--shadow-xs)] hover:bg-[#f6d48c]"
+      className="h-9 min-w-[150px] rounded-lg btn-accent px-4"
     >
       Exportación mensual
     </Button>

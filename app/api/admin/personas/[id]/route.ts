@@ -157,6 +157,12 @@ export async function DELETE(
     const supabase = createSupabaseServerClient();
     const { error } = await supabase.from("personas").delete().eq("id", id);
     if (error) {
+      if (error.code === "23503") {
+        return NextResponse.json(
+          { error: "No se puede eliminar: tiene entregas asociadas." },
+          { status: 409 },
+        );
+      }
       console.error("Error deleting persona:", error);
       return NextResponse.json({ error: "No se pudo eliminar." }, { status: 500 });
     }

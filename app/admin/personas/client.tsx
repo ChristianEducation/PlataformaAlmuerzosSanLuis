@@ -55,7 +55,7 @@ export function PersonasClient({ personas }: Props) {
   const [items, setItems] = useState<Persona[]>(personas);
   const [search, setSearch] = useState("");
   const [tipoFilter, setTipoFilter] = useState<Persona["tipo"] | "all">("all");
-  const [estadoFilter, setEstadoFilter] = useState<"all" | "activo" | "inactivo">("all");
+  const [estadoFilter, setEstadoFilter] = useState<"all" | "activo" | "inactivo">("activo");
   const [vigenciaFilter, setVigenciaFilter] = useState<"all" | "vigente" | "novigente">("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -66,7 +66,7 @@ export function PersonasClient({ personas }: Props) {
   );
   const [openActionId, setOpenActionId] = useState<number | null>(null);
   const actionMenuRef = useRef<HTMLDivElement | null>(null);
-  const actionAnchorRef = useRef<HTMLButtonElement | null>(null);
+  const [actionAnchorEl, setActionAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [menuPosition, setMenuPosition] = useState<{ top: number; left: number } | null>(null);
   const [form, setForm] = useState<FormState>({
     nombre_completo: "",
@@ -109,18 +109,20 @@ export function PersonasClient({ personas }: Props) {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent | TouchEvent) => {
-      if (!actionMenuRef.current) return;
       const target = event.target as Node;
-      const clickedMenu = actionMenuRef.current.contains(target);
-      const clickedAnchor =
-        actionAnchorRef.current && actionAnchorRef.current.contains(target);
+      const clickedMenu = actionMenuRef.current?.contains(target);
+      const clickedAnchor = actionAnchorEl?.contains(target);
       if (!clickedMenu && !clickedAnchor) {
         setOpenActionId(null);
+        setActionAnchorEl(null);
       }
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpenActionId(null);
+      if (event.key === "Escape") {
+        setOpenActionId(null);
+        setActionAnchorEl(null);
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
@@ -134,40 +136,50 @@ export function PersonasClient({ personas }: Props) {
   }, []);
 
   useEffect(() => {
-    if (!openActionId || !actionAnchorRef.current) return;
-    const menuWidth = 144;
-    const menuHeight = 128;
+    if (!openActionId || !actionAnchorEl) return;
     const padding = 8;
+    const gap = 8;
 
     const updatePosition = () => {
-      if (!actionAnchorRef.current) return;
-      const rect = actionAnchorRef.current.getBoundingClientRect();
-      let top = rect.bottom + 8;
+      const rect = actionAnchorEl.getBoundingClientRect();
+      const menuRect = actionMenuRef.current?.getBoundingClientRect();
+      const menuWidth = menuRect?.width || 160;
+      const menuHeight = menuRect?.height || 140;
+
+      let top = rect.bottom + gap;
       if (top + menuHeight > window.innerHeight - padding) {
-        top = rect.top - menuHeight - 8;
+        top = rect.top - menuHeight - gap;
       }
-      const left = Math.max(padding, rect.right - menuWidth);
+      if (top < padding) top = padding;
+
+      let left = rect.right - menuWidth;
+      if (left + menuWidth > window.innerWidth - padding) {
+        left = window.innerWidth - menuWidth - padding;
+      }
+      if (left < padding) left = padding;
+
       setMenuPosition({ top, left });
     };
 
-    updatePosition();
+    const raf = requestAnimationFrame(updatePosition);
     window.addEventListener("scroll", updatePosition, true);
     window.addEventListener("resize", updatePosition);
     return () => {
+      cancelAnimationFrame(raf);
       window.removeEventListener("scroll", updatePosition, true);
       window.removeEventListener("resize", updatePosition);
     };
-  }, [openActionId]);
+  }, [openActionId, actionAnchorEl]);
 
   const renderActionsMenu = (p: Persona) => {
     const isOpen = openActionId === p.id;
     return (
-      <div ref={isOpen ? actionMenuRef : null} className="relative inline-flex">
+      <div className="relative inline-flex">
         <button
           type="button"
           onClick={(event) => {
             const btn = event.currentTarget as HTMLButtonElement;
-            actionAnchorRef.current = btn;
+            setActionAnchorEl(btn);
             setOpenActionId(isOpen ? null : p.id);
           }}
           className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-[#eeeff2] text-slate-600 shadow-[var(--shadow-xs)] transition hover:bg-slate-50"
@@ -373,7 +385,7 @@ export function PersonasClient({ personas }: Props) {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-[#f1f2f5] bg-white/90 px-4 py-4 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)] sm:px-6">
+      <div className="rounded-2xl cs-card px-4 py-4 sm:px-6">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
@@ -387,7 +399,7 @@ export function PersonasClient({ personas }: Props) {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <Button
               onClick={openCreate}
-              className="h-10 w-full rounded-lg bg-[#ffe3a3] text-slate-900 shadow-[var(--shadow-xs)] hover:bg-[#f6d48c] sm:w-auto"
+              className="h-10 w-full rounded-lg btn-accent sm:w-auto"
             >
               + Nueva Persona
             </Button>
@@ -423,7 +435,7 @@ export function PersonasClient({ personas }: Props) {
         </div>
       ) : null}
 
-      <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
+      <Card className="cs-card">
         <CardHeader className="space-y-4">
           <CardTitle className="text-base font-semibold text-slate-900">
             Filtros

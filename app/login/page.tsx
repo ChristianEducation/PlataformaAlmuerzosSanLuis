@@ -54,7 +54,7 @@ export default function LoginPage() {
             priority
           />
         </div>
-        <div className="relative mt-10 w-full max-w-lg rounded-2xl border border-[#f1f2f5] bg-white/90 px-5 pt-12 pb-7 shadow-[0_6px_24px_rgba(15,23,42,0.06)] backdrop-blur sm:mt-0 sm:px-8 sm:pt-14">
+        <div className="relative mt-10 w-full max-w-lg rounded-2xl cs-card px-5 pt-12 pb-7 backdrop-blur sm:mt-0 sm:px-8 sm:pt-14">
           <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-[#f1e4c2] bg-[#fff3cf] px-3 py-1 text-xs font-semibold text-slate-700 shadow-[var(--shadow-xs)] sm:left-6 sm:top-6">
             Colegio San Luis · Plataforma de almuerzos
           </div>
