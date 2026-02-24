@@ -50,7 +50,7 @@ export default function LoginPage() {
             alt="Insignia Colegio San Luis"
             width={120}
             height={120}
-            className="h-14 w-auto rounded-full bg-white/80 p-1.5 object-contain shadow-[var(--shadow-xs)] sm:h-16"
+            className="h-14 w-auto object-contain sm:h-16"
             priority
           />
         </div>
