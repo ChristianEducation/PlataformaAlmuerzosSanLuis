@@ -179,7 +179,7 @@ export function PersonasClient({ personas }: Props) {
           ? createPortal(
               <div
                 ref={actionMenuRef}
-                className="fixed z-50 w-36 rounded-xl border border-[#eeeff2] bg-white p-2 shadow-[var(--shadow-card)]"
+                className="fixed z-50 w-36 rounded-xl border border-[#f1f2f5] bg-white/95 p-2 shadow-[0_6px_24px_rgba(15,23,42,0.08)]"
                 style={{ top: menuPosition.top, left: menuPosition.left }}
               >
                 <button
@@ -373,7 +373,7 @@ export function PersonasClient({ personas }: Props) {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-[#eeeff2] bg-white px-4 py-4 shadow-[var(--shadow-card)] sm:px-6">
+      <div className="rounded-2xl border border-[#f1f2f5] bg-white/90 px-4 py-4 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)] sm:px-6">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-400">
@@ -387,7 +387,7 @@ export function PersonasClient({ personas }: Props) {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <Button
               onClick={openCreate}
-              className="h-10 w-full rounded-lg bg-[#ffd85f] text-black shadow-[var(--shadow-xs)] hover:bg-[#f2c94c] sm:w-auto"
+              className="h-10 w-full rounded-lg bg-[#ffe3a3] text-slate-900 shadow-[var(--shadow-xs)] hover:bg-[#f6d48c] sm:w-auto"
             >
               + Nueva Persona
             </Button>
@@ -423,7 +423,7 @@ export function PersonasClient({ personas }: Props) {
         </div>
       ) : null}
 
-      <Card className="border-[#eeeff2] shadow-[var(--shadow-card)]">
+      <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
         <CardHeader className="space-y-4">
           <CardTitle className="text-base font-semibold text-slate-900">
             Filtros

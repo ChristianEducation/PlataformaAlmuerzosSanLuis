@@ -12,13 +12,20 @@ type Props = {
 export function AdminShell({ children }: Props) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
+    <div
+      className="min-h-screen bg-transparent text-slate-900"
+      style={{
+        backgroundColor: "hsl(var(--background))",
+        backgroundImage:
+          "linear-gradient(135deg, rgba(15,23,42,0.04) 0%, rgba(255,216,95,0.08) 55%, rgba(255,255,255,0.7) 100%)",
+      }}
+    >
       <div className="mx-auto flex max-w-6xl gap-6 px-4 py-4 sm:px-6 lg:px-8">
         <div className="hidden lg:block self-start sticky top-6">
           <AdminSidebar />
         </div>
         <div className="flex flex-1 flex-col gap-4">
-          <header className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white/90 px-4 py-3 shadow-sm ring-1 ring-black/[0.02] lg:hidden">
+          <header className="flex items-center justify-between rounded-2xl border border-slate-100 bg-white/55 px-4 py-3 shadow-[var(--shadow-xs)] backdrop-blur lg:hidden">
             <div className="flex items-center gap-3">
               <button
                 type="button"

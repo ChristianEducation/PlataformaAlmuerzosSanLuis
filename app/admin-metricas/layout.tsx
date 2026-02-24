@@ -8,9 +8,16 @@ export default async function AdminMetricasLayout({ children }: { children: Reac
   const session = await getSessionFromCookies();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 text-slate-900">
+    <div
+      className="min-h-screen bg-transparent text-slate-900"
+      style={{
+        backgroundColor: "hsl(var(--background))",
+        backgroundImage:
+          "linear-gradient(135deg, rgba(15,23,42,0.04) 0%, rgba(255,216,95,0.08) 55%, rgba(255,255,255,0.7) 100%)",
+      }}
+    >
       <div className="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
-        <header className="flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white/90 px-4 py-3 shadow-sm ring-1 ring-black/[0.02] sm:flex-row sm:items-center sm:justify-between">
+        <header className="flex flex-col gap-3 rounded-2xl border border-[#f1f2f5] bg-white/55 px-4 py-3 shadow-[var(--shadow-xs)] backdrop-blur sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
               Colegio San Luis
@@ -23,14 +30,14 @@ export default async function AdminMetricasLayout({ children }: { children: Reac
             {session?.rol === "superadmin" ? (
               <a
                 href="/admin"
-                className="inline-flex h-9 items-center justify-center rounded-lg border border-slate-200 px-3 text-sm font-semibold text-slate-700 shadow-[var(--shadow-xs)] transition hover:bg-slate-100"
+                className="inline-flex h-9 items-center justify-center rounded-lg border border-[#eeeff2] px-3 text-sm font-semibold text-slate-700 shadow-[var(--shadow-xs)] transition hover:bg-slate-50"
               >
                 Volver a Superadmin
               </a>
             ) : null}
             <a
               href="/fila"
-              className="inline-flex h-9 items-center justify-center rounded-lg border border-slate-200 px-3 text-sm font-semibold text-slate-700 shadow-[var(--shadow-xs)] transition hover:bg-slate-100"
+              className="inline-flex h-9 items-center justify-center rounded-lg border border-[#eeeff2] px-3 text-sm font-semibold text-slate-700 shadow-[var(--shadow-xs)] transition hover:bg-slate-50"
             >
               Ir a Fila
             </a>

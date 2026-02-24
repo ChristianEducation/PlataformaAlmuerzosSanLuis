@@ -205,7 +205,7 @@ export function UsuariosClient({ usuarios }: Props) {
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <Button
               onClick={openCreate}
-              className="h-10 w-full rounded-lg bg-[#ffd85f] text-black shadow-[var(--shadow-xs)] hover:bg-[#f2c94c] sm:w-auto"
+              className="h-10 w-full rounded-lg bg-[#ffe3a3] text-slate-900 shadow-[var(--shadow-xs)] hover:bg-[#f6d48c] sm:w-auto"
             >
               Nuevo usuario
             </Button>
@@ -222,7 +222,7 @@ export function UsuariosClient({ usuarios }: Props) {
         </div>
       ) : null}
 
-      <Card className="border-[#eeeff2] shadow-[var(--shadow-card)]">
+      <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
         <CardHeader className="space-y-4">
           <CardTitle className="text-base font-semibold text-slate-900">
             Filtros

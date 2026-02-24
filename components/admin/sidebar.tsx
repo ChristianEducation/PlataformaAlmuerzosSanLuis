@@ -58,7 +58,7 @@ export function AdminSidebar({ className, onNavigate }: AdminSidebarProps) {
               className={cn(
                 "block rounded-xl px-3 py-2 text-sm font-medium transition-colors",
                 active
-                  ? "bg-[#ffd85f] text-black shadow-[var(--shadow-xs)]"
+                  ? "bg-[#ffe3a3] text-slate-900 shadow-[var(--shadow-xs)]"
                   : "text-slate-700 hover:bg-slate-100 hover:text-slate-900",
               )}
             >

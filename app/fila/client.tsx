@@ -13,7 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Lock, Search, Loader2, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Lock, Search, Loader2, AlertCircle, CheckCircle2, Users } from "lucide-react";
 
 type PersonaRow = {
   id: number;
@@ -144,8 +144,15 @@ export function FilaClient({ dateLabel, usuario, rol, initialPersonas, horarioCo
   }, [successOpen]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f8f9fb] text-slate-900">
-      <header className="sticky top-0 z-10 border-b border-[#eeeff2] bg-white/95 backdrop-blur">
+    <div
+      className="flex min-h-screen flex-col bg-transparent text-slate-900"
+      style={{
+        backgroundColor: "hsl(var(--background))",
+        backgroundImage:
+          "linear-gradient(135deg, rgba(15,23,42,0.04) 0%, rgba(255,216,95,0.08) 55%, rgba(255,255,255,0.7) 100%)",
+      }}
+    >
+      <header className="sticky top-0 z-10 border-b border-[#f1f2f5] bg-white/55 shadow-[var(--shadow-xs)] backdrop-blur">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-6 lg:px-8">
           <div className="space-y-1">
             <p className="text-sm font-medium text-slate-500">Entrega de almuerzos</p>
@@ -156,7 +163,7 @@ export function FilaClient({ dateLabel, usuario, rol, initialPersonas, horarioCo
               </Badge>
             </div>
           </div>
-            <div className="flex w-full flex-col items-start gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end sm:gap-3">
+          <div className="flex w-full flex-col items-start gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end sm:gap-3">
             <div className="flex flex-wrap items-center gap-2">
               <Badge
                 variant="outline"
@@ -164,7 +171,7 @@ export function FilaClient({ dateLabel, usuario, rol, initialPersonas, horarioCo
               >
                 Usuario: {usuario}
               </Badge>
-              <Badge className="bg-[#ffd85f] text-xs text-black shadow-[var(--shadow-xs)] sm:text-sm">
+              <Badge className="border-[#eeeff2] text-xs font-semibold text-slate-700 sm:text-sm" variant="outline">
                 Total entregados hoy: {entregadosHoy}
               </Badge>
             </div>
@@ -200,10 +207,13 @@ export function FilaClient({ dateLabel, usuario, rol, initialPersonas, horarioCo
       </header>
 
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-4 px-4 py-5 sm:px-6 lg:px-8">
-        <div className="rounded-2xl border border-[#eeeff2] bg-white p-4 shadow-[var(--shadow-card)] sm:p-5">
+        <div className="rounded-2xl border border-[#f1f2f5] bg-white/90 p-4 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)] sm:p-5">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="space-y-1">
-              <h2 className="text-lg font-semibold text-slate-900 sm:text-xl">
+              <h2 className="flex items-center gap-2 text-lg font-semibold text-slate-900 sm:text-xl">
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#fff2cc] text-[#8a6a12]">
+                  <Users className="h-4 w-4" />
+                </span>
                 Funcionarios y visitas
               </h2>
               <p className="text-xs text-slate-600 sm:text-sm">
@@ -222,7 +232,7 @@ export function FilaClient({ dateLabel, usuario, rol, initialPersonas, horarioCo
                 placeholder="Buscar por nombre o correo…"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="h-10 rounded-lg border-[#eeeff2] bg-white pl-10 text-slate-900 placeholder:text-[#a4abb8] shadow-[var(--shadow-xs)] sm:h-11"
+                className="h-10 rounded-lg border-[#eeeff2] bg-white pl-10 text-slate-900 placeholder:text-[#a4abb8] shadow-[var(--shadow-xs)] transition-shadow duration-200 focus-visible:ring-2 focus-visible:ring-[#ffd85f]/40 sm:h-11"
               />
             </div>
           </div>
@@ -234,18 +244,20 @@ export function FilaClient({ dateLabel, usuario, rol, initialPersonas, horarioCo
             </div>
           ) : null}
 
-          <div className="mt-4 divide-y divide-[#f1f2f5] border-t border-[#f1f2f5]">
+          <div className="mt-4 overflow-hidden rounded-xl border border-[#f1f2f5]">
             {filtered.length === 0 ? (
               <div className="py-10 text-center text-sm text-slate-500">
                 No encontramos personas con ese criterio.
               </div>
             ) : (
-              filtered.map((persona) => {
+              filtered.map((persona, index) => {
                 const entregado = !!persona.entregadoAt;
                 return (
                   <div
                     key={persona.id}
-                    className="flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between"
+                    className={`flex flex-col gap-3 px-3 py-3 transition-colors duration-150 sm:flex-row sm:items-center sm:justify-between sm:px-4 ${
+                      index % 2 === 0 ? "bg-white" : "bg-[#f8f9fb]"
+                    } ${entregado ? "opacity-80" : ""}`}
                   >
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
@@ -270,7 +282,7 @@ export function FilaClient({ dateLabel, usuario, rol, initialPersonas, horarioCo
                         <Button
                           onClick={() => setSelected(persona)}
                           disabled={isPending || fueraHorario}
-                          className="w-full rounded-lg bg-[#ffd85f] text-black shadow-[var(--shadow-xs)] hover:bg-[#f2c94c] sm:w-auto"
+                          className="w-full rounded-lg bg-[#ffe3a3] text-slate-900 shadow-[var(--shadow-xs)] transition-transform duration-150 hover:-translate-y-0.5 hover:bg-[#f6d48c] sm:w-auto"
                         >
                           Entregar
                         </Button>
@@ -307,7 +319,7 @@ export function FilaClient({ dateLabel, usuario, rol, initialPersonas, horarioCo
             <Button
               onClick={() => selected && entregar(selected)}
               disabled={isPending || fueraHorario}
-              className="bg-[#ffd85f] text-black shadow-[var(--shadow-xs)] hover:bg-[#f2c94c]"
+              className="bg-[#ffe3a3] text-slate-900 shadow-[var(--shadow-xs)] hover:bg-[#f6d48c]"
             >
               {isPending ? (
                 <span className="flex items-center gap-2">

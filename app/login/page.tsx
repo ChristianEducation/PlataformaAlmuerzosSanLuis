@@ -9,17 +9,24 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <div className="relative min-h-screen bg-[#f8f9fb] text-slate-900 md:grid md:grid-cols-2">
+    <div
+      className="relative min-h-screen bg-transparent text-slate-900 md:grid md:grid-cols-2"
+      style={{
+        backgroundColor: "hsl(var(--background))",
+        backgroundImage:
+          "linear-gradient(135deg, rgba(15,23,42,0.04) 0%, rgba(255,216,95,0.08) 55%, rgba(255,255,255,0.7) 100%)",
+      }}
+    >
       {/* Fondo mobile/tablet */}
       <div className="absolute inset-0 md:hidden">
         <Image
           src="/colegiosanluis.png"
           alt="Colegio San Luis"
           fill
-          className="object-cover opacity-30"
+          className="object-cover opacity-25"
           priority
         />
-        <div className="absolute inset-0 bg-white/70" />
+        <div className="absolute inset-0 bg-white/80" />
       </div>
 
       {/* Columna izquierda: imagen en desktop */}
@@ -31,7 +38,8 @@ export default function LoginPage() {
           className="object-cover"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/0 to-white/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/5 to-white/15" />
+        <div className="absolute inset-0 bg-black/5" />
       </div>
 
       {/* Columna derecha: formulario y logo */}
@@ -42,12 +50,12 @@ export default function LoginPage() {
             alt="Insignia Colegio San Luis"
             width={120}
             height={120}
-            className="h-14 w-auto object-contain sm:h-16"
+            className="h-14 w-auto rounded-full bg-white/80 p-1.5 object-contain shadow-[var(--shadow-xs)] sm:h-16"
             priority
           />
         </div>
-        <div className="relative mt-10 w-full max-w-lg rounded-2xl border border-[#eeeff2] bg-white/95 px-5 pt-12 pb-7 shadow-[var(--shadow-card)] backdrop-blur sm:mt-0 sm:px-8 sm:pt-14">
-          <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-[#f2c94c] bg-[#ffd85f] px-3 py-1 text-xs font-semibold text-black shadow-[var(--shadow-xs)] sm:left-6 sm:top-6">
+        <div className="relative mt-10 w-full max-w-lg rounded-2xl border border-[#f1f2f5] bg-white/90 px-5 pt-12 pb-7 shadow-[0_6px_24px_rgba(15,23,42,0.06)] backdrop-blur sm:mt-0 sm:px-8 sm:pt-14">
+          <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-[#f1e4c2] bg-[#fff3cf] px-3 py-1 text-xs font-semibold text-slate-700 shadow-[var(--shadow-xs)] sm:left-6 sm:top-6">
             Colegio San Luis · Plataforma de almuerzos
           </div>
           <div className="mb-6 space-y-2">

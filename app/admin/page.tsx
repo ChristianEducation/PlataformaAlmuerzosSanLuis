@@ -176,7 +176,7 @@ export default async function AdminDashboard({ searchParams }: SearchProps) {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
+        <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-medium text-slate-500">
@@ -193,7 +193,7 @@ export default async function AdminDashboard({ searchParams }: SearchProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-medium text-slate-500">
@@ -212,7 +212,7 @@ export default async function AdminDashboard({ searchParams }: SearchProps) {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
+        <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-medium text-slate-500">
@@ -233,7 +233,7 @@ export default async function AdminDashboard({ searchParams }: SearchProps) {
                 <div key={day.iso} className="flex flex-1 flex-col items-center gap-1">
                   <div className="flex h-12 w-full items-end rounded-md bg-slate-100 sm:h-16">
                     <div
-                      className="w-full rounded-md bg-gradient-to-t from-[#f2c94c] to-[#ffd85f] transition-all"
+                      className="w-full rounded-md bg-gradient-to-t from-[#f6d48c] to-[#ffe3a3] transition-all"
                       style={{ height: `${(day.value / weekMax) * 100}%` }}
                     />
                   </div>
@@ -247,7 +247,7 @@ export default async function AdminDashboard({ searchParams }: SearchProps) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-[#f1f2f5] bg-white/90 shadow-[0_6px_24px_rgba(15,23,42,0.06)] transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(15,23,42,0.08)]">
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="text-sm font-medium text-slate-500">
@@ -271,7 +271,7 @@ export default async function AdminDashboard({ searchParams }: SearchProps) {
                 <div key={`${w.label}-${idx}`} className="flex flex-1 flex-col items-center gap-1">
                   <div className="flex h-12 w-full items-end rounded-md bg-slate-100 sm:h-16">
                     <div
-                      className="w-full rounded-md bg-gradient-to-t from-[#f2c94c] to-[#ffd85f] transition-all"
+                      className="w-full rounded-md bg-gradient-to-t from-[#f6d48c] to-[#ffe3a3] transition-all"
                       style={{ height: `${(w.value / monthWeekMax) * 100}%` }}
                     />
                   </div>
