@@ -68,11 +68,15 @@ export function EntregasClient({ rows, initialFilters, errorMessage }: Props) {
 
   const handleExportExcel = () => {
     if (!hasData) return;
+    const baseDate = dateFromValue || dateToValue || todayChileISO();
+    const baseDateValue = baseDate && /^\d{4}-\d{2}-\d{2}$/.test(baseDate)
+      ? new Date(`${baseDate}T12:00:00Z`)
+      : new Date();
     const monthLabel = new Intl.DateTimeFormat("es-CL", {
       month: "long",
       year: "numeric",
       timeZone: "America/Santiago",
-    }).format(new Date(`${dateFromValue || dateToValue}-01T12:00:00Z`));
+    }).format(baseDateValue);
     const monthParts = monthLabel.split(" ");
     const monthName = monthParts[0]
       ? monthParts[0].charAt(0).toUpperCase() + monthParts[0].slice(1)
