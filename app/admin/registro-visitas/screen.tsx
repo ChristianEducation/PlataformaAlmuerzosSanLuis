@@ -60,7 +60,7 @@ export function RegistroVisitasScreen({ initialRows, initialFilters, errorMessag
 
   const handleReset = () => {
     const today = todayInChileISO();
-    const next = { dateFrom: today, dateTo: today, tipo: "all", q: "" };
+    const next: RegistroVisitaFilters = { dateFrom: today, dateTo: today, tipo: "all", q: "" };
     setFilters(next);
     const params = new URLSearchParams();
     params.set("desde", today);
