@@ -12,10 +12,8 @@ type Props = {
 };
 
 export function RegistroVisitasTable({ rows, onSaveNombre }: Props) {
-  let slotIndex = 0;
-
   const renderEstado = (row: RegistroVisitaRow) => {
-    const completo = Boolean(row.nombreOficial);
+    const completo = !row.esSlotVisita || Boolean(row.nombreOficial);
     return (
       <Badge
         variant="outline"
@@ -25,7 +23,7 @@ export function RegistroVisitasTable({ rows, onSaveNombre }: Props) {
             : "border-amber-200 bg-amber-50 text-amber-700"
         }
       >
-        {completo ? "Completo" : "Pendiente"}
+        {completo ? "Completo" : "Pendiente de registro"}
       </Badge>
     );
   };
@@ -51,26 +49,25 @@ export function RegistroVisitasTable({ rows, onSaveNombre }: Props) {
               </tr>
             ) : (
               rows.map((row) => {
-                if (row.esSlotVisita) slotIndex += 1;
-                const visitaLabel = row.esSlotVisita
-                  ? `Visita ${slotIndex}`
-                  : row.personaNombre;
+                const visitaLabel = row.esSlotVisita ? "Cupo de emergencia" : "Visita programada";
+                const slotLabel = row.slotIndex ? `Visita ${row.slotIndex}` : "Visita";
 
                 return (
                   <tr key={row.entregaId} className="hover:bg-[#f8f9fb]">
                     <td className="px-4 py-3 whitespace-nowrap">{row.fecha}</td>
                     <td className="px-4 py-3">
                       <div className="font-medium">{visitaLabel}</div>
-                      <div className="text-xs text-slate-500">
-                        {row.esSlotVisita ? "Cupo de emergencia" : "Visita programada"}
-                      </div>
                     </td>
                     <td className="px-4 py-3">
-                      <RegistroVisitasEditable
-                        value={row.nombreOficial}
-                        disabled={Boolean(row.nombreOficial)}
-                        onSave={(value) => onSaveNombre(row.entregaId, value)}
-                      />
+                      {row.esSlotVisita ? (
+                        <RegistroVisitasEditable
+                          value={row.nombreOficial || slotLabel}
+                          locked={Boolean(row.nombreOficial)}
+                          onSave={(value) => onSaveNombre(row.entregaId, value)}
+                        />
+                      ) : (
+                        <span className="text-sm text-slate-700">{row.personaNombre}</span>
+                      )}
                     </td>
                     <td className="px-4 py-3">{renderEstado(row)}</td>
                   </tr>
@@ -88,10 +85,8 @@ export function RegistroVisitasTable({ rows, onSaveNombre }: Props) {
           </div>
         ) : (
           rows.map((row) => {
-            if (row.esSlotVisita) slotIndex += 1;
-            const visitaLabel = row.esSlotVisita
-              ? `Visita ${slotIndex}`
-              : row.personaNombre;
+            const visitaLabel = row.esSlotVisita ? "Cupo de emergencia" : "Visita programada";
+            const slotLabel = row.slotIndex ? `Visita ${row.slotIndex}` : "Visita";
 
             return (
               <div key={row.entregaId} className="space-y-3 px-4 py-4">
@@ -101,11 +96,15 @@ export function RegistroVisitasTable({ rows, onSaveNombre }: Props) {
                 </div>
                 <div className="text-xs text-slate-500">{row.fecha}</div>
                 <div className="text-sm text-slate-700">
-                  <RegistroVisitasEditable
-                    value={row.nombreOficial}
-                    disabled={Boolean(row.nombreOficial)}
-                    onSave={(value) => onSaveNombre(row.entregaId, value)}
-                  />
+                  {row.esSlotVisita ? (
+                    <RegistroVisitasEditable
+                      value={row.nombreOficial || slotLabel}
+                      locked={Boolean(row.nombreOficial)}
+                      onSave={(value) => onSaveNombre(row.entregaId, value)}
+                    />
+                  ) : (
+                    <span className="text-sm text-slate-700">{row.personaNombre}</span>
+                  )}
                 </div>
               </div>
             );

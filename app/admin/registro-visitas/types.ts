@@ -5,6 +5,7 @@ export type RegistroVisitaRow = {
   personaNombre: string;
   esSlotVisita: boolean;
   nombreOficial: string | null;
+  slotIndex?: number | null;
 };
 
 export type RegistroVisitaFilters = {

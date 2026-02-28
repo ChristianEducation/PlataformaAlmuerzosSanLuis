@@ -47,8 +47,23 @@ export async function fetchRegistroVisitas({ dateFrom, dateTo, tipo }: RegistroV
         personaNombre: persona?.nombre_completo || "Sin nombre",
         esSlotVisita: Boolean(persona?.es_slot_visita),
         nombreOficial: registro?.nombre_oficial || null,
+        slotIndex: null,
       };
     }) || [];
+
+  const slotsByDate = new Map<string, RegistroVisitaRow[]>();
+  rows.forEach((row) => {
+    if (!row.esSlotVisita) return;
+    const list = slotsByDate.get(row.fecha) ?? [];
+    list.push(row);
+    slotsByDate.set(row.fecha, list);
+  });
+  slotsByDate.forEach((list) => {
+    list.sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+    list.forEach((row, idx) => {
+      row.slotIndex = idx + 1;
+    });
+  });
 
   return { rows, errorMessage: null };
 }

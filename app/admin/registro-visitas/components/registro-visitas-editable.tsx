@@ -9,15 +9,16 @@ type SaveResult = { ok: boolean; value?: string | null; error?: string };
 type Props = {
   value: string | null;
   disabled?: boolean;
+  locked?: boolean;
   onSave: (next: string | null) => Promise<SaveResult>;
 };
 
-export function RegistroVisitasEditable({ value, disabled, onSave }: Props) {
+export function RegistroVisitasEditable({ value, disabled, locked, onSave }: Props) {
   const [localValue, setLocalValue] = useState(value || "");
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const lastSavedRef = useRef(value || "");
-  const [locked, setLocked] = useState(Boolean(value));
+  const [isLocked, setIsLocked] = useState(Boolean(value));
 
   const normalizeNombre = (input: string) => {
     const base = input.trim().replace(/\s+/g, " ");
@@ -37,11 +38,11 @@ export function RegistroVisitasEditable({ value, disabled, onSave }: Props) {
   useEffect(() => {
     setLocalValue(value || "");
     lastSavedRef.current = value || "";
-    setLocked(Boolean(value));
-  }, [value]);
+    setIsLocked(locked ?? Boolean(value));
+  }, [value, locked]);
 
   const commit = async () => {
-    if (disabled || isSaving || locked) return;
+    if (disabled || isSaving || isLocked) return;
     const next = normalizeNombre(localValue);
     if (next === lastSavedRef.current) return;
 
@@ -57,10 +58,10 @@ export function RegistroVisitasEditable({ value, disabled, onSave }: Props) {
 
     lastSavedRef.current = result.value ?? "";
     setLocalValue(result.value || "");
-    setLocked(true);
+    setIsLocked(true);
   };
 
-  if (disabled || locked) {
+  if (disabled || isLocked) {
     return <span className="text-sm text-slate-700">{value || "—"}</span>;
   }
 
