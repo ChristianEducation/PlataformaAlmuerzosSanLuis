@@ -90,7 +90,7 @@ export async function POST(request: Request) {
 
   const { data: persona, error: personaErr } = await supabase
     .from("personas")
-    .select("id, nombre_completo, email, activo, fecha_inicio, fecha_fin")
+    .select("id, nombre_completo, email, tipo, activo, fecha_inicio, fecha_fin")
     .eq("id", personaId)
     .maybeSingle();
 
@@ -127,6 +127,18 @@ export async function POST(request: Request) {
     }
     console.error("insert entrega error", error);
     return NextResponse.json({ error: "No se pudo registrar." }, { status: 500 });
+  }
+
+  if (persona.tipo === "visita" && data?.id) {
+    const { error: visitaError } = await supabase
+      .from("visitas_registro")
+      .upsert(
+        { entrega_id: data?.id, nombre_oficial: null, updated_at: new Date().toISOString() },
+        { onConflict: "entrega_id" },
+      );
+    if (visitaError) {
+      console.error("insert visitas_registro error", visitaError);
+    }
   }
 
   const emailResult = await sendEntregaEmail({

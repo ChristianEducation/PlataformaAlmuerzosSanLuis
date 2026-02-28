@@ -14,6 +14,7 @@ const navItems: NavItem[] = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/metricas", label: "Métricas" },
   { href: "/admin/entregas", label: "Historial de Entregas" },
+  { href: "/admin/registro-visitas", label: "Registro de Visitas" },
   { href: "/admin/personas", label: "Gestión de Personas" },
   { href: "/admin/usuarios", label: "Usuarios" },
   { href: "/admin/configuracion", label: "Configuración" },

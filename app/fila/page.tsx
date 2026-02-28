@@ -25,6 +25,7 @@ type PersonaRecord = {
   nombre_completo: string;
   email: string | null;
   tipo: "funcionario" | "visita" | "reemplazo";
+  es_slot_visita: boolean;
   activo: boolean;
   fecha_inicio: string | null;
   fecha_fin: string | null;
@@ -91,7 +92,7 @@ export default async function FilaPage() {
     supabase
       .from("personas")
       .select(
-        "id, nombre_completo, email, tipo, activo, fecha_inicio, fecha_fin",
+        "id, nombre_completo, email, tipo, es_slot_visita, activo, fecha_inicio, fecha_fin",
       ),
     supabase
       .from("entregas")
@@ -130,6 +131,7 @@ export default async function FilaPage() {
     nombre: p.nombre_completo,
     email: p.email,
     tipo: p.tipo,
+    es_slot_visita: Boolean(p.es_slot_visita),
     entregadoAt: entregasMap.get(p.id) || null,
     entregadoAtLabel: entregasMap.get(p.id)
       ? formatTimeLabel(entregasMap.get(p.id) as string)

@@ -7,6 +7,21 @@ export const dynamic = "force-dynamic";
 
 const allowedTipos = ["funcionario", "visita", "reemplazo"];
 
+function normalizeNombreCompleto(input: string) {
+  const base = input.trim().replace(/\s+/g, " ");
+  if (!base) return "";
+  const withVisita = base.replace(/(^|\b)visita\s*(\d+)\b/gi, (match, prefix, num) =>
+    `${prefix}Visita ${num}`.trimStart(),
+  );
+  const normalized = withVisita.replace(/\s+/g, " ").trim();
+  return normalized
+    .split(" ")
+    .map((word) =>
+      /^\d+$/.test(word) ? word : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+    )
+    .join(" ");
+}
+
 function todayInChileISO() {
   const fmt = new Intl.DateTimeFormat("es-CL", {
     timeZone: "America/Santiago",
@@ -27,6 +42,7 @@ type PersonaDB = {
   nombre_completo: string;
   email: string | null;
   tipo: string;
+  es_slot_visita: boolean;
   fecha_inicio: string | null;
   fecha_fin: string | null;
   activo: boolean;
@@ -50,6 +66,7 @@ function buildPersonaResponse(row: PersonaDB) {
     nombre_completo: row.nombre_completo,
     email: row.email,
     tipo: row.tipo,
+    es_slot_visita: Boolean(row.es_slot_visita),
     fecha_inicio: row.fecha_inicio,
     fecha_fin: row.fecha_fin,
     activo: row.activo,
@@ -78,7 +95,7 @@ export async function PATCH(
     const updates: Partial<PersonaDB> = {};
 
     if (body.nombre_completo !== undefined) {
-      updates.nombre_completo = String(body.nombre_completo || "").trim();
+      updates.nombre_completo = normalizeNombreCompleto(String(body.nombre_completo || ""));
       if (!updates.nombre_completo) {
         return NextResponse.json({ error: "Nombre es obligatorio." }, { status: 400 });
       }
@@ -93,6 +110,9 @@ export async function PATCH(
         return NextResponse.json({ error: "Tipo inválido." }, { status: 400 });
       }
       updates.tipo = tipo;
+    }
+    if (body.es_slot_visita !== undefined) {
+      updates.es_slot_visita = Boolean(body.es_slot_visita);
     }
     if (body.fecha_inicio !== undefined) {
       updates.fecha_inicio = body.fecha_inicio || null;
@@ -116,6 +136,40 @@ export async function PATCH(
     }
 
     const supabase = createSupabaseServerClient();
+    if (updates.nombre_completo) {
+      const { data: existing, error: existingError } = await supabase
+        .from("personas")
+        .select("id, nombre_completo")
+        .neq("id", id);
+      if (existingError) {
+        console.error("Error validating nombre_completo:", existingError);
+        return NextResponse.json({ error: "No se pudo validar el nombre." }, { status: 500 });
+      }
+      const normalized = updates.nombre_completo.toLowerCase();
+      if (
+        existing?.some(
+          (row) => normalizeNombreCompleto(row.nombre_completo).toLowerCase() === normalized,
+        )
+      ) {
+        return NextResponse.json({ error: "El nombre ya existe." }, { status: 409 });
+      }
+    }
+    if (updates.tipo && updates.tipo !== "visita") {
+      updates.es_slot_visita = false;
+    }
+    if (updates.es_slot_visita !== undefined && updates.tipo === undefined) {
+      const { data: current, error: currentError } = await supabase
+        .from("personas")
+        .select("tipo")
+        .eq("id", id)
+        .single();
+      if (currentError) {
+        return NextResponse.json({ error: "No se pudo validar el tipo." }, { status: 500 });
+      }
+      if (current?.tipo !== "visita") {
+        updates.es_slot_visita = false;
+      }
+    }
     const { data, error } = await supabase
       .from("personas")
       .update(updates)

@@ -15,6 +15,7 @@ type EntregaRow = {
   personaNombre: string;
   personaEmail: string | null;
   usuario: string;
+  nombreOficial: string | null;
 };
 
 function todayInChileISO() {
@@ -83,7 +84,8 @@ export default async function AdminEntregasPage({
       id,
       fecha,
       created_at,
-      persona:persona_id (id, nombre_completo, email),
+      persona:persona_id (id, nombre_completo, email, tipo),
+      registro:visitas_registro (nombre_oficial),
       usuario:creado_por_usuario_id (username)
     `,
     )
@@ -104,14 +106,22 @@ export default async function AdminEntregasPage({
   let rows: EntregaRow[] =
     entregasData?.map((row) => {
       const persona = Array.isArray(row.persona) ? row.persona[0] : row.persona;
+      const registro = Array.isArray(row.registro) ? row.registro[0] : row.registro;
       const usuario = Array.isArray(row.usuario) ? row.usuario[0] : row.usuario;
+      const nombreOficial = registro?.nombre_oficial || null;
+      const personaNombreBase = persona?.nombre_completo || "Sin nombre";
+      const personaNombre =
+        persona?.tipo === "visita" && nombreOficial
+          ? `${personaNombreBase} (${nombreOficial})`
+          : personaNombreBase;
       return {
         id: row.id,
         fecha: row.fecha,
         horaLabel: formatHoraChile(row.created_at),
-        personaNombre: persona?.nombre_completo || "Sin nombre",
+        personaNombre,
         personaEmail: persona?.email || null,
         usuario: usuario?.username || "—",
+        nombreOficial,
       };
     }) || [];
 
@@ -119,6 +129,7 @@ export default async function AdminEntregasPage({
     rows = rows.filter(
       (r) =>
         r.personaNombre.toLowerCase().includes(q) ||
+        (r.nombreOficial ? r.nombreOficial.toLowerCase().includes(q) : false) ||
         (r.personaEmail ? r.personaEmail.toLowerCase().includes(q) : false),
     );
   }

@@ -26,9 +26,9 @@
   --success: 125 58% 42%; /* #30AF32 */
   --success-bg: 127 53% 93%; /* #EAF7EA */
   --success-border: 123 46% 74%; /* #ACDFAD */
-  --error: 0 53% 55%; /* #CC4F4F */
-  --error-bg: 0 63% 96%; /* #FAEDED */
-  --error-border: 0 58% 83%; /* #EBB8B8 */
+  --error: #c03030;
+  --error-bg: #fce5e5;
+  --error-border: #e36b6b;
   --yellow: 48 100% 66%; /* #FFD85F */
   --accent-soft: #ffe3a3;
   --accent-soft-hover: #f6d48c;

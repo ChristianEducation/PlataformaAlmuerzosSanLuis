@@ -9,8 +9,9 @@ export const dynamic = "force-dynamic";
 type PersonaRow = {
   id: number;
   nombre_completo: string;
-  email: string;
+  email: string | null;
   tipo: "funcionario" | "visita" | "reemplazo";
+  es_slot_visita: boolean;
   fecha_inicio: string | null;
   fecha_fin: string | null;
   activo: boolean;
@@ -67,7 +68,7 @@ export default async function AdminPersonasPage() {
 
   const { data, error } = await supabase
     .from("personas")
-    .select("id, nombre_completo, email, tipo, fecha_inicio, fecha_fin, activo")
+    .select("id, nombre_completo, email, tipo, es_slot_visita, fecha_inicio, fecha_fin, activo")
     .order("nombre_completo", { ascending: true });
 
   if (error) {
@@ -82,6 +83,7 @@ export default async function AdminPersonasPage() {
         nombre_completo: p.nombre_completo,
         email: p.email,
         tipo: p.tipo as PersonaRow["tipo"],
+        es_slot_visita: Boolean(p.es_slot_visita),
         fecha_inicio: p.fecha_inicio,
         fecha_fin: p.fecha_fin,
         activo: p.activo,

@@ -20,6 +20,7 @@ type PersonaRow = {
   nombre: string;
   email: string | null;
   tipo: "funcionario" | "visita" | "reemplazo";
+  es_slot_visita: boolean;
   entregadoAt?: string | null;
   entregadoAtLabel?: string | null;
 };

@@ -28,6 +28,7 @@ type Persona = {
   nombre_completo: string;
   email: string | null;
   tipo: "funcionario" | "visita" | "reemplazo";
+  es_slot_visita: boolean;
   fecha_inicio: string | null;
   fecha_fin: string | null;
   activo: boolean;
@@ -44,6 +45,7 @@ type FormState = {
   nombre_completo: string;
   email: string;
   tipo: Persona["tipo"];
+  es_slot_visita: boolean;
   fecha_inicio: string;
   fecha_fin: string;
   activo: boolean;
@@ -59,6 +61,8 @@ export function PersonasClient({ personas }: Props) {
   const [vigenciaFilter, setVigenciaFilter] = useState<"all" | "vigente" | "novigente">("all");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isVisitTypeOpen, setIsVisitTypeOpen] = useState(false);
+  const [prevTipo, setPrevTipo] = useState<Persona["tipo"] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [modalError, setModalError] = useState<string | null>(null);
   const [successToast, setSuccessToast] = useState<{ message: string; visible: boolean } | null>(
@@ -72,6 +76,7 @@ export function PersonasClient({ personas }: Props) {
     nombre_completo: "",
     email: "",
     tipo: "funcionario",
+    es_slot_visita: false,
     fecha_inicio: "",
     fecha_fin: "",
     activo: true,
@@ -238,6 +243,7 @@ export function PersonasClient({ personas }: Props) {
       nombre_completo: "",
       email: "",
       tipo: "funcionario",
+      es_slot_visita: false,
       fecha_inicio: "",
       fecha_fin: "",
       activo: true,
@@ -253,6 +259,7 @@ export function PersonasClient({ personas }: Props) {
       nombre_completo: p.nombre_completo,
       email: p.email || "",
       tipo: p.tipo,
+      es_slot_visita: p.es_slot_visita,
       fecha_inicio: p.fecha_inicio || "",
       fecha_fin: p.fecha_fin || "",
       activo: p.activo,
@@ -268,9 +275,10 @@ export function PersonasClient({ personas }: Props) {
     setModalError(null);
     try {
       const payload = {
-        nombre_completo: form.nombre_completo.trim(),
+        nombre_completo: normalizeNombreCompleto(form.nombre_completo),
         email: form.email.trim() || null,
         tipo: form.tipo,
+        es_slot_visita: form.tipo === "visita" ? form.es_slot_visita : false,
         fecha_inicio: form.fecha_inicio || null,
         fecha_fin: form.fecha_fin || null,
         activo: form.activo,
@@ -298,7 +306,11 @@ export function PersonasClient({ personas }: Props) {
       }
       const data = await res.json();
       if (!res.ok) {
-        setModalError(data.error || "No se pudo guardar.");
+        if (res.status === 409) {
+          setModalError(data.error || "El nombre ya existe.");
+        } else {
+          setModalError(data.error || "No se pudo guardar.");
+        }
         setIsSaving(false);
         return;
       }
@@ -382,6 +394,24 @@ export function PersonasClient({ personas }: Props) {
 
   const renderTipo = (tipo: Persona["tipo"]) =>
     tipo.charAt(0).toUpperCase() + tipo.slice(1);
+  const renderTipoLabel = (persona: Persona) => {
+    if (persona.tipo !== "visita") return renderTipo(persona.tipo);
+    return persona.es_slot_visita ? "Cupo de emergencia" : "Visita programada";
+  };
+  const normalizeNombreCompleto = (input: string) => {
+    const base = input.trim().replace(/\s+/g, " ");
+    if (!base) return "";
+    const withVisita = base.replace(/(^|\b)visita\s*(\d+)\b/gi, (match, prefix, num) =>
+      `${prefix}Visita ${num}`.trimStart(),
+    );
+    const normalized = withVisita.replace(/\s+/g, " ").trim();
+    return normalized
+      .split(" ")
+      .map((word) =>
+        /^\d+$/.test(word) ? word : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+      )
+      .join(" ");
+  };
 
   return (
     <div className="space-y-6">
@@ -542,7 +572,7 @@ export function PersonasClient({ personas }: Props) {
                         <div className="font-medium">{p.nombre_completo}</div>
                       </td>
                       <td className="px-4 py-3 text-slate-700">{p.email || "Sin correo"}</td>
-                      <td className="px-4 py-3 text-slate-700">{renderTipo(p.tipo)}</td>
+                      <td className="px-4 py-3 text-slate-700">{renderTipoLabel(p)}</td>
                       <td className="px-4 py-3 text-slate-700">{p.vigenciaLabel}</td>
                       <td className="px-4 py-3">{renderEstado(p)}</td>
                       <td className="px-4 py-3">{renderActionsMenu(p)}</td>
@@ -571,7 +601,7 @@ export function PersonasClient({ personas }: Props) {
                   </div>
                   <div className="mt-2 flex flex-wrap gap-2 text-xs text-slate-500">
                     <span className="rounded-full bg-slate-100 px-2 py-1">
-                      {renderTipo(p.tipo)}
+                      {renderTipoLabel(p)}
                     </span>
                     <span className="rounded-full bg-slate-100 px-2 py-1">
                       {p.vigenciaLabel}
@@ -608,6 +638,12 @@ export function PersonasClient({ personas }: Props) {
                 id="nombre"
                 value={form.nombre_completo}
                 onChange={(e) => setForm((f) => ({ ...f, nombre_completo: e.target.value }))}
+                onBlur={(e) =>
+                  setForm((f) => ({
+                    ...f,
+                    nombre_completo: normalizeNombreCompleto(e.target.value),
+                  }))
+                }
                 placeholder="Nombre completo"
               />
             </div>
@@ -626,7 +662,17 @@ export function PersonasClient({ personas }: Props) {
                 <Label>Tipo</Label>
                 <Select
                   value={form.tipo}
-                  onValueChange={(v) => setForm((f) => ({ ...f, tipo: v as Persona["tipo"] }))}
+                  onValueChange={(v) =>
+                    setForm((f) => {
+                      const nextTipo = v as Persona["tipo"];
+                      if (nextTipo === "visita") {
+                        setPrevTipo(f.tipo);
+                        setIsVisitTypeOpen(true);
+                        return { ...f, tipo: nextTipo };
+                      }
+                      return { ...f, tipo: nextTipo, es_slot_visita: false };
+                    })
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Tipo" />
@@ -655,6 +701,21 @@ export function PersonasClient({ personas }: Props) {
                   </SelectContent>
                 </Select>
               </div>
+              {form.tipo === "visita" ? (
+                <div className="space-y-1">
+                  <Label>Detalle de visita</Label>
+                  <button
+                    type="button"
+                    onClick={() => setIsVisitTypeOpen(true)}
+                    className="inline-flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm text-slate-900 shadow-[var(--shadow-xs)] transition hover:bg-slate-50"
+                  >
+                    <span>
+                      {form.es_slot_visita ? "Cupo de emergencia" : "Visita programada"}
+                    </span>
+                    <span className="text-xs text-slate-500">Editar</span>
+                  </button>
+                </div>
+              ) : null}
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div className="space-y-1">
@@ -696,6 +757,56 @@ export function PersonasClient({ personas }: Props) {
                   Guardar
                 </span>
               )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={isVisitTypeOpen} onOpenChange={setIsVisitTypeOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Tipo de visita</DialogTitle>
+            <DialogDescription>Selecciona el detalle de la visita.</DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setForm((f) => ({ ...f, es_slot_visita: false }));
+                setIsVisitTypeOpen(false);
+                setPrevTipo(null);
+              }}
+            >
+              Visita programada
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setForm((f) => ({ ...f, es_slot_visita: true }));
+                setIsVisitTypeOpen(false);
+                setPrevTipo(null);
+              }}
+            >
+              Cupo de emergencia
+            </Button>
+          </div>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => {
+                setForm((f) => ({
+                  ...f,
+                  tipo: prevTipo || "funcionario",
+                  es_slot_visita: false,
+                }));
+                setIsVisitTypeOpen(false);
+                setPrevTipo(null);
+              }}
+            >
+              Cancelar
             </Button>
           </DialogFooter>
         </DialogContent>
